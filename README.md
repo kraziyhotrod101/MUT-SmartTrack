@@ -1,6 +1,6 @@
-# edutrack_mut
+# Edutrack MUT
 
-A new Flutter project.
+A digital attendance for Murang'a University Of Technology.
 
 ## Getting Started
 
