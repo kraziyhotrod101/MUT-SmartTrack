@@ -5,6 +5,7 @@ import '../../features/attendance/presentation/screens/home/home_page.dart';
 import '../../features/attendance/presentation/screens/home/history.dart';
 import '../../features/attendance/presentation/screens/home/timetable.dart';
 import '../../features/attendance/presentation/screens/home/settings.dart';
+import '../../features/attendance/presentation/screens/home/qr_scan.dart';
 
 final GoRouter appRouter = GoRouter(
   initialLocation: '/login',
@@ -20,6 +21,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsPage(),
+    ),
+    GoRoute(
+      path: '/qr_scan',
+      builder: (context, state) => const QRScanPage(),
     ),
   ],
 );

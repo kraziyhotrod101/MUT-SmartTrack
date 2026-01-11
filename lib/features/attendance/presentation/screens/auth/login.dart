@@ -1,8 +1,18 @@
+import 'package:edutrack_mut/core/usecases/role.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  // To keep track of the selected role locally for the UI state
+  // We initialize it from the RoleManager's current role
+  UserRole _selectedRole = RoleManager().currentRole;
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +138,34 @@ class LoginPage extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ...UserRole.values.map((role) {
+                        final isSelected = _selectedRole == role;
+                        return ChoiceChip(
+                          label: Text(role.name.toUpperCase()),
+                          selected: isSelected,
+                          selectedColor: primaryColor,
+                          labelStyle: TextStyle(
+                            color: isSelected ? Colors.white : Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                          onSelected: (selected) {
+                            if (selected) {
+                              setState(() {
+                                _selectedRole = role;
+                              });
+                              // Update the global role manager
+                              RoleManager().setRole(role);
+                            }
+                          },
+                        );
+                      }),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
 
                   // Login Button
                   ElevatedButton(

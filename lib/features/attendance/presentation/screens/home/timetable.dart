@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import '../../../../../core/usecases/role.dart';
 
 class TimeTablePage extends StatefulWidget {
   const TimeTablePage({super.key});
@@ -12,15 +13,19 @@ class TimeTablePage extends StatefulWidget {
 class _TimeTablePageState extends State<TimeTablePage> {
   int _selectedDayIndex = 0;
   final List<String> _days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  final roleManager = RoleManager();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          "Timetable",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        title: Text(
+          roleManager.isAdmin ? "Class Management" : "Timetable",
+          style: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -29,13 +34,17 @@ class _TimeTablePageState extends State<TimeTablePage> {
       ),
       body: Column(
         children: [
-          _buildDaySelector(),
+          if (!roleManager.isAdmin) _buildDaySelector(),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
-              itemCount: 4, // Example classes per day
+              itemCount: 4, // Example classes
               itemBuilder: (context, index) {
-                return _buildClassItem(index);
+                if (roleManager.isAdmin) {
+                  return _buildAdminClassItem(index);
+                } else {
+                  return _buildClassItem(index);
+                }
               },
             ),
           ),
@@ -48,7 +57,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
           backgroundColor: Colors.white,
           color: Colors.grey,
           activeColor: Colors.white,
-          tabBackgroundColor: Colors.green.shade600, // Updated color
+          tabBackgroundColor: Colors.green.shade600,
           gap: 8,
           padding: const EdgeInsets.all(16),
           selectedIndex: 2,
@@ -93,9 +102,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
               width: 60,
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Colors
-                          .green
-                          .shade600 // Updated color
+                    ? Colors.green.shade600
                     : Colors.grey.shade100,
                 borderRadius: BorderRadius.circular(12),
                 border: isSelected
@@ -119,6 +126,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
   }
 
   Widget _buildClassItem(int index) {
+    // Same as student view, can also apply to lecturer
     final times = [
       '08:00 - 10:00',
       '10:00 - 12:00',
@@ -155,9 +163,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
             height: 50,
             decoration: BoxDecoration(
               color: index % 2 == 0
-                  ? Colors
-                        .green
-                        .shade600 // Updated color
+                  ? Colors.green.shade600
                   : const Color(0xFFFF4081),
               borderRadius: BorderRadius.circular(2),
             ),
@@ -201,6 +207,25 @@ class _TimeTablePageState extends State<TimeTablePage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildAdminClassItem(int index) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Colors.grey.shade200),
+      ),
+      child: ListTile(
+        title: Text("Unit Code ${index + 101}: Software Engineering"),
+        subtitle: const Text("Lecturer: Dr. Smith"),
+        trailing: TextButton(
+          onPressed: () {}, // Navigate to View/Edit Class
+          child: const Text("Edit"),
+        ),
       ),
     );
   }

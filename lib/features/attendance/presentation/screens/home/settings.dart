@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import '../../../../../core/usecases/role.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  final roleManager = RoleManager();
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +32,9 @@ class SettingsPage extends StatelessWidget {
         child: Column(
           children: [
             _buildProfileSection(),
+            const SizedBox(height: 24),
+            // Widget for testing roles
+            _buildRoleSwitcher(),
             const SizedBox(height: 24),
             _buildSettingsItem(
               icon: Icons.person_outline,
@@ -63,7 +74,7 @@ class SettingsPage extends StatelessWidget {
           backgroundColor: Colors.white,
           color: Colors.grey,
           activeColor: Colors.white,
-          tabBackgroundColor: Colors.green.shade600, // Updated color
+          tabBackgroundColor: Colors.green.shade600,
           gap: 8,
           padding: const EdgeInsets.all(16),
           selectedIndex: 3,
@@ -87,7 +98,68 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  Widget _buildRoleSwitcher() {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.blue.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.blue.shade200),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Dev: Switch Role (For Testing)",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildRoleButton(UserRole.student, "Student"),
+              _buildRoleButton(UserRole.lecturer, "Lecturer"),
+              _buildRoleButton(UserRole.admin, "Admin"),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRoleButton(UserRole role, String label) {
+    bool isSelected = roleManager.currentRole == role;
+    return ElevatedButton(
+      onPressed: () {
+        setState(() {
+          roleManager.setRole(role);
+        });
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Switched to $label")));
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isSelected ? Colors.blue : Colors.white,
+        foregroundColor: isSelected ? Colors.white : Colors.blue,
+        elevation: 0,
+        side: const BorderSide(color: Colors.blue),
+      ),
+      child: Text(label),
+    );
+  }
+
   Widget _buildProfileSection() {
+    String name = "Student Name";
+    String email = "student@university.edu";
+
+    if (roleManager.isLecturer) {
+      name = "Dr. Smith";
+      email = "smith@university.edu";
+    } else if (roleManager.isAdmin) {
+      name = "Admin User";
+      email = "admin@university.edu";
+    }
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -110,20 +182,20 @@ class SettingsPage extends StatelessWidget {
             child: const Icon(Icons.person, color: Colors.white, size: 30),
           ),
           const SizedBox(width: 16),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Student Name",
-                style: TextStyle(
+                name,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.black87,
                 ),
               ),
               Text(
-                "student@university.edu",
-                style: TextStyle(fontSize: 14, color: Colors.grey),
+                email,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
               ),
             ],
           ),
