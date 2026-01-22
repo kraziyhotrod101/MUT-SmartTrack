@@ -36,11 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
             // Widget for testing roles
             _buildRoleSwitcher(),
             const SizedBox(height: 24),
-            _buildSettingsItem(
-              icon: Icons.person_outline,
-              title: "Edit Profile",
-              onTap: () {},
-            ),
+
             _buildSettingsItem(
               icon: Icons.notifications_none,
               title: "Notifications",
