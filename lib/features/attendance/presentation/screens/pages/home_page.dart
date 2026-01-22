@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
     final roleManager = RoleManager();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       floatingActionButton: roleManager.isStudent
           ? FloatingActionButton.extended(
               onPressed: () {
@@ -39,32 +39,32 @@ class HomePage extends StatelessWidget {
                 const SizedBox(height: 24),
                 _buildStatsRow(),
                 const SizedBox(height: 24),
-                const Text(
+                Text(
                   "Upcoming Lecture",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 12),
-                _buildUpcomingLectureCard(),
-                const SizedBox(height: 16),
+                SizedBox(height: 12),
+                _buildUpcomingLectureCard(context),
+                SizedBox(height: 16),
                 // --- Removed Scanner Button from Body since it's now a FAB ---
                 // Center(child: _buildScanButton()),
-                // const SizedBox(height: 16),
-                const Text(
+                // SizedBox(height: 16),
+                Text(
                   "Recents",
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 12),
-                _buildRecentItem(),
-                const SizedBox(height: 12),
-                _buildRecentItem(),
+                SizedBox(height: 12),
+                _buildRecentItem(context),
+                SizedBox(height: 12),
+                _buildRecentItem(context),
               ] else if (roleManager.isLecturer) ...[
                 // Lecturer Widgets
                 const Text(
@@ -89,10 +89,10 @@ class HomePage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
         child: GNav(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           color: Colors.grey,
           activeColor: Colors.white,
           tabBackgroundColor: Colors.green.shade600,
@@ -326,12 +326,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildUpcomingLectureCard() {
+  Widget _buildUpcomingLectureCard(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -344,13 +344,17 @@ class HomePage extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text(
             "Unit Code : Unit Name",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Lecture Duration",
             style: TextStyle(
               fontSize: 14,
@@ -358,8 +362,8 @@ class HomePage extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          SizedBox(height: 8),
-          Text(
+          const SizedBox(height: 8),
+          const Text(
             "Lecturer Name",
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           ),
@@ -368,12 +372,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildRecentItem() {
+  Widget _buildRecentItem(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -386,15 +390,22 @@ class HomePage extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text(
             "Unit Name",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           Text(
             "Time Verified : Means of Verification",
-            style: TextStyle(fontSize: 13, color: Colors.black54),
+            style: TextStyle(
+              fontSize: 13,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
@@ -413,7 +424,7 @@ class HomePage extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 16),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.grey.shade200),
             boxShadow: [

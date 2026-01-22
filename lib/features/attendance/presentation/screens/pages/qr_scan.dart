@@ -2,6 +2,7 @@ import 'package:edutrack_mut/core/usecases/role.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import '../../../../../core/theme/theme_controller.dart';
 
 class QRScanPage extends StatefulWidget {
   const QRScanPage({super.key});
@@ -38,9 +39,7 @@ class _QRScanPageState extends State<QRScanPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        backgroundColor: Colors.white,
         elevation: 0,
-        foregroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -72,7 +71,7 @@ class _QRScanPageState extends State<QRScanPage> {
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
@@ -232,8 +231,8 @@ class QrScannerOverlayShape extends ShapeBorder {
     final borderWidthSize = width / 2;
     final height = rect.height;
     final borderOffset = borderWidth / 2;
-    final _cutOutSize = cutOutSize != 0.0
-        ? cutOutSize
+    final finalCutOutSize = this.cutOutSize != 0.0
+        ? this.cutOutSize
         : width - 40; // Default size logic
 
     final backgroundPaint = Paint()
@@ -250,10 +249,10 @@ class QrScannerOverlayShape extends ShapeBorder {
       ..style = PaintingStyle.fill;
 
     final cutOutRect = Rect.fromLTWH(
-      rect.left + width / 2 - _cutOutSize / 2 + borderOffset,
-      rect.top + height / 2 - _cutOutSize / 2 + borderOffset,
-      _cutOutSize - borderWidth,
-      _cutOutSize - borderWidth,
+      rect.left + width / 2 - finalCutOutSize / 2 + borderOffset,
+      rect.top + height / 2 - finalCutOutSize / 2 + borderOffset,
+      finalCutOutSize - borderWidth,
+      finalCutOutSize - borderWidth,
     );
 
     canvas

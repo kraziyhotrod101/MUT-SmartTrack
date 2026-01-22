@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import '../../../../../core/usecases/role.dart';
+import '../../../../../core/theme/theme_controller.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -16,13 +17,12 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: const Text(
           "Settings",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: false,
         automaticallyImplyLeading: false,
@@ -44,23 +44,42 @@ class _SettingsPageState extends State<SettingsPage> {
             _buildSettingsItem(
               icon: Icons.notifications_none,
               title: "Notifications",
-              onTap: () {},
+              onTap: () {
+                context.go('/notifications');
+              },
             ),
             _buildSettingsItem(
               icon: Icons.lock_outline,
               title: "Security",
-              onTap: () {},
+              onTap: () {
+                context.go('/security');
+              },
             ),
             _buildSettingsItem(
               icon: Icons.dark_mode_outlined,
               title: "Dark Mode",
-              trailing: Switch(value: false, onChanged: (v) {}),
+              trailing: ValueListenableBuilder<ThemeMode>(
+                valueListenable: ThemeController.instance.themeMode,
+                builder: (context, mode, _) {
+                  final isDark = mode == ThemeMode.dark;
+                  return Switch(
+                    value: isDark,
+                    onChanged: (v) {
+                      ThemeController.instance.setThemeMode(
+                        v ? ThemeMode.dark : ThemeMode.light,
+                      );
+                    },
+                  );
+                },
+              ),
               onTap: () {},
             ),
             _buildSettingsItem(
               icon: Icons.help_outline,
               title: "Help & Support",
-              onTap: () {},
+              onTap: () {
+                context.go('/help_support');
+              },
             ),
             const SizedBox(height: 20),
             _buildLogoutButton(context),
@@ -68,10 +87,10 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
       bottomNavigationBar: Container(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
         child: GNav(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           color: Colors.grey,
           activeColor: Colors.white,
           tabBackgroundColor: Colors.green.shade600,
@@ -163,7 +182,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -190,13 +209,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black87,
                 ),
               ),
-              Text(
-                email,
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
-              ),
+              Text(email, style: const TextStyle(fontSize: 14)),
             ],
           ),
           const Spacer(),
@@ -221,7 +236,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.grey.shade100),
       ),

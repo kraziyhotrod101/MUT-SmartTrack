@@ -18,16 +18,12 @@ class _TimeTablePageState extends State<TimeTablePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           roleManager.isAdmin ? "Class Management" : "Timetable",
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: false,
         automaticallyImplyLeading: false,
@@ -51,10 +47,10 @@ class _TimeTablePageState extends State<TimeTablePage> {
         ],
       ),
       bottomNavigationBar: Container(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
         child: GNav(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           color: Colors.grey,
           activeColor: Colors.white,
           tabBackgroundColor: Colors.green.shade600,
@@ -145,7 +141,7 @@ class _TimeTablePageState extends State<TimeTablePage> {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

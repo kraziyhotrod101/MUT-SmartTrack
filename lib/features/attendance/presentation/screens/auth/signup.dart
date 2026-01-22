@@ -10,7 +10,7 @@ class SignupPage extends StatelessWidget {
     final primaryColor = Colors.green.shade600;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [

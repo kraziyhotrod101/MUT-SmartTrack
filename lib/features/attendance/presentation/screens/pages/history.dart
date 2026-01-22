@@ -15,26 +15,19 @@ class HistoryPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text(
-          title,
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.white,
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
         elevation: 0,
         centerTitle: false,
         automaticallyImplyLeading: false,
       ),
-      body: _buildBody(roleManager),
+      body: _buildBody(context, roleManager),
       bottomNavigationBar: Container(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
         child: GNav(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           color: Colors.grey,
           activeColor: Colors.white,
           tabBackgroundColor: Colors.green.shade600,
@@ -61,13 +54,13 @@ class HistoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(RoleManager roleManager) {
+  Widget _buildBody(BuildContext context, RoleManager roleManager) {
     if (roleManager.isStudent) {
       return ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: 10,
         itemBuilder: (context, index) {
-          return _buildHistoryItem();
+          return _buildHistoryItem(context);
         },
       );
     } else {
@@ -76,7 +69,8 @@ class HistoryPage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            if (roleManager.isAdmin) _buildExportSection("Export School Data"),
+            if (roleManager.isAdmin)
+              _buildExportSection("Export All Reports", context),
             const SizedBox(height: 20),
             _buildSectionHeader(
               roleManager.isAdmin ? "Subject Reports" : "My Subjects Reports",
@@ -95,13 +89,13 @@ class HistoryPage extends StatelessWidget {
     }
   }
 
-  Widget _buildHistoryItem() {
+  Widget _buildHistoryItem(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -114,27 +108,34 @@ class HistoryPage extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text(
             "Unit Name",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
           ),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           Text(
             "Time Verified : Means of Verification",
-            style: TextStyle(fontSize: 13, color: Colors.black54),
+            style: TextStyle(
+              fontSize: 13,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildExportSection(String title) {
+  Widget _buildExportSection(String title, BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.green.shade50,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
